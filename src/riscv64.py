@@ -55,10 +55,21 @@ def extract_riscv64(riscv_opc_path):
                 break
     return result
 
+def find_riscv64_class_from_objdump_line(s, db):
+    # Note: objdump should use -M no-aliases
+    each = s.strip().split("\t")
+    if each[0][-1] == ':':
+        # GNU
+        inst = each[2].strip().split()[0]
+        return db[inst]
+    else:
+        # LLVM
+        inst = each[1].strip().split()[0]
+        return db[inst]
+
 if __name__ == '__main__':
     import sys
     insts = extract_riscv64(sys.argv[2])
     import json
-    import sys
     with open(sys.argv[1], 'w') as f:
         json.dump(insts, f, indent=2)
