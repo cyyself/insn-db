@@ -31,6 +31,24 @@ def extract_aarch64(tbl_path):
                 result[inst_str][f"{inst_op},{inst_mask}"] = inst_type
     return result
 
+def find_aarch64_class_from_objdump_line(s, db):
+    # Note: objdump should use -M no-aliases
+    each = s.strip().split("\t")
+    if each[0][-1] == ':':
+        # GNU
+        inst = each[2].strip().split()[0]
+        hex = each[1].strip()
+    else:
+        # LLVM
+        inst = each[1].strip().split()[0]
+        hex = each[0].strip().split(":")[1].strip()
+    x = int(hex, 16)
+    for k, v in db[inst].items():
+        op, mask = k.split(",")
+        if (x & int(mask, 16)) == int(op, 16):
+            return v
+    return None
+
 if __name__ == '__main__':
     import sys
     insts = extract_aarch64(sys.argv[2])
