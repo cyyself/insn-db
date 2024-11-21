@@ -1,10 +1,10 @@
 .PHONY: all clean
 all: out/riscv64-class.json out/aarch64-class.json
-out/riscv64-class.json: ext/binutils-gdb/opcodes/riscv-opc.c src/riscv64.py out
-	python3 src/riscv64.py $@ $<
+out/riscv64-class.json: ext/binutils-gdb/opcodes/riscv-opc.c src/insn-db.py out
+	python3 src/insn-db.py $@ $<
 
-out/aarch64-class.json: build/aarch64-tbl-preprocessed.h src/aarch64.py out
-	python3 src/aarch64.py $@ $<
+out/aarch64-class.json: build/aarch64-tbl-preprocessed.h src/insn-db.py out
+	python3 src/insn-db.py $@ $<
 
 build/aarch64-tbl-preprocessed.h: build/aarch64-tbl-noinc.h
 	gcc -DVERIFIER -E $< -o $@
