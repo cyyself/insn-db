@@ -60,6 +60,8 @@ def extract_riscv64(riscv_opc_path):
         # Use first class name for Zk* and Zvk*
         "INSN_CLASS_ZKND_OR_ZKNE": "INSN_CLASS_ZKND",
         "INSN_CLASS_ZVKNHA_OR_ZVKNHB": "INSN_CLASS_ZVKNHA",
+        # Zvef should be V
+        "INSN_CLASS_ZVEF": "INSN_CLASS_V",
         # Ignore I
         "INSN_CLASS_I": ""
     }
